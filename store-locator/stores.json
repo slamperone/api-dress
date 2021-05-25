@@ -1,0 +1,32 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "hours": "10am - 6pm",
+        "description": "Tienda de vestidos en CDMX",
+        "name": "Royal Bride",
+        "phone": "+52 55 1234 5678"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -99.13719177246094,
+          19.419325579756944
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -99.11659240722656,
+          19.400220769585886
+        ]
+      }
+    }
+  ]
+}
