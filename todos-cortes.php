@@ -27,7 +27,7 @@ $corte = array(
 
 
 
-$json_string = json_encode($vista, JSON_PRETTY_PRINT);
+$json_string = json_encode($corte, JSON_PRETTY_PRINT);
 
 print $json_string;
 

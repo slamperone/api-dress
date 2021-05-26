@@ -32,7 +32,7 @@ $color  = array(
 
 
 
-$json_string = json_encode($vista, JSON_PRETTY_PRINT);
+$json_string = json_encode($color, JSON_PRETTY_PRINT);
 
 print $json_string;
 

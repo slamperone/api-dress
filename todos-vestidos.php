@@ -67,9 +67,9 @@ $vestidos  = array(
 			'alt_atribute' => 'Este color es el chido si estas prieta y culera', 
 		),
 	),	
-)	
+);	
 
-$json_string = json_encode($vista, JSON_PRETTY_PRINT);
+$json_string = json_encode($vestidos, JSON_PRETTY_PRINT);
 
 print $json_string;
 
