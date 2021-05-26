@@ -3,27 +3,29 @@
 ///get todos los cortes
 header('Content-Type: application/json');
 
-$escote  = array(	
+$color  = array(	
 
 		array(
 			'id' => '0111',
-			'nombre' => 'Barco',
-			'icon' => 'https://xochimaco.com/b879e89b97f4/diana-di-giorno/img/escote-barco.svg',
-			'alt_atribute' => 'Este es el mejor tipod escote para viejas chichonas alv', 
+			'nombre' => 'Ivory',
+			'icon' => 'https://xochimaco.com/b879e89b97f4/diana-di-giorno/img/rectangle.svg',
+			'hexadec' => '#F67C39',
+			'alt_atribute' => 'Este color es el chido si estas prieta y culera', 
 		),
 		array(
-			'id' => '032',
-			'nombre' => 'En V',
-			'icon' => 'https://xochimaco.com/b879e89b97f4/diana-di-giorno/img/escote-v.svg',
-			'alt_atribute' => 'Este es el mejor tipod escote para viejas chichonas alv', 
+			'id' => '0111',
+			'nombre' => 'Esmeralda',
+			'icon' => 'https://xochimaco.com/b879e89b97f4/diana-di-giorno/img/rectangle.svg',
+			'hexadec' => '#2CFF3E',
+			'alt_atribute' => 'Este color es el chido si estas prieta y culera', 
 		),
 		array(
-			'id' => '0555',
-			'nombre' => 'Halter',
-			'icon' => 'https://xochimaco.com/b879e89b97f4/diana-di-giorno/img/escote-halter.svg',
-			'alt_atribute' => 'Este es el mejor tipod escote para viejas chichonas alv', 
-		),	
-
+			'id' => '0111',
+			'nombre' => 'Rosa pastel',
+			'icon' => 'https://xochimaco.com/b879e89b97f4/diana-di-giorno/img/rectangle.svg',
+			'hexadec' => '#F526F7',
+			'alt_atribute' => 'Este color es el chido si estas prieta y culera', 
+		),		
 
 
 );
