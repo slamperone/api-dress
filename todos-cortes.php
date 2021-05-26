@@ -3,8 +3,7 @@
 ///get todos los cortes
 header('Content-Type: application/json');
 
-$vista  = array(	
-	'corte' => array(
+$corte = array(	
 		array(
 			'id' => '0001',
 			'nombre' => 'Recto',
@@ -23,9 +22,6 @@ $vista  = array(
 			'icon' => 'https://xochimaco.com/b879e89b97f4/diana-di-giorno/img/vestido-sirena.svg',
 			'alt_atribute' => 'Si estas chaparra y gorda te conviene este corte', 
 		),
-	)
-
-
 
 );
 
