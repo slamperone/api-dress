@@ -36,7 +36,7 @@ function ProcessWireHostSiteConfig() {
 		 * Just note that the values must begin with 'site-'.
 		 *
 		 */
-		 'vestidos.pw.com' => 'site',
+		 'http://ec2-3-131-119-29.us-east-2.compute.amazonaws.com' => 'site',
 
 		/*
 		 * Default for all others (typically /site/)
