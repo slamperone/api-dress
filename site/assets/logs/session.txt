@@ -1,0 +1,12 @@
+2021-05-24 16:00:18	admin	http://vestidos.pw.com/orpot/vestidos/admin/login/	Successful login for 'admin'
+2021-05-24 16:36:38	editor-tienda	http://vestidos.pw.com/orpot/vestidos/admin/login/	Successful login for 'editor-tienda'
+2021-05-25 12:53:47	guest	http://vestidos.pw.com/admin/login/	Error: Failed login for 'admin' - Invalid password
+2021-05-25 12:59:05	admin	http://vestidos.pw.com/admin/login/	Successful login for 'admin'
+2021-05-25 18:12:45	admin	http://vestidos.pw.com/admin/login/	Successful login for 'admin'
+2021-05-26 10:05:32	guest	http://vestidos.pw.com/admin/login/	Error: Failed login for 'admin' - Invalid password
+2021-05-26 10:08:27	admin	http://vestidos.pw.com/admin/login/	Successful login for 'admin'
+2021-06-01 14:55:35	guest	http://vestidos.pw.com/admin/login/	Error: Failed login for 'admin' - Invalid password
+2021-06-01 14:56:47	admin	http://vestidos.pw.com/admin/login/	Successful login for 'admin'
+2021-06-01 14:57:03	?	?	User 'admin' - Error: Session fingerprint changed (IP address or useragent) (IP: 127.0.0.1)
+2021-06-01 14:57:22	admin	http://vestidos.pw.com/admin/login/	Successful login for 'admin'
+2021-06-01 17:15:46	admin	http://vestidos.pw.com/admin/login/	Successful login for 'admin'

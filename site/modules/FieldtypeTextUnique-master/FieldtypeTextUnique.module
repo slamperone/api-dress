@@ -1,0 +1,88 @@
+<?php namespace ProcessWire;
+
+/**
+ * ProcessWire Unique Text Fieldtype
+ *
+ * Basic Field that stores text, typically a single line. 
+ * Same as FieldtypeText, but requires the value to be globally unique.
+ *
+ * Copyright (C) 2021 by Ryan Cramer 
+ * Licensed under MPL 2.0
+ * 
+ * https://processwire.com
+ *
+ */
+
+class FieldtypeTextUnique extends FieldtypeText {
+
+	public static function getModuleInfo() {
+		return array(
+			'title' => 'Text Unique',
+			'version' => 301,
+			'summary' => 'Same as the Text fieldtype, but enforces that values stored are unique, site-wide.',
+			'requires' => 'ProcessWire>=3.0.150',
+			'href' => 'https://github.com/ryancramerdesign/FieldtypeTextUnique', 
+		);
+	}
+
+	/**
+	 * Get Inputfield
+	 * 
+	 * @param Page $page
+	 * @param Field $field
+	 * @return Inputfield
+	 * 
+	 */
+	public function getInputfield(Page $page, Field $field) {
+		$inputfield = parent::getInputfield($page, $field);
+		if(!$page->id || !$field->id) return $inputfield;
+		$inputfield->addHookAfter('processInput', function(HookEvent $event) use($page, $field) {
+			if($event) {}
+			/** @var InputfieldText $inputfield */
+			$inputfield = $event->object; 
+			if(!$inputfield->isChanged() || !$page->id || !$field->id) return;
+			$value = $inputfield->val();
+			if(!strlen($value)) return; 
+			$fields = $field->wire()->fields;
+			$pageId = $fields->tableTools()->valueExists($field, $value);
+			if(!$pageId || $pageId == $page->id) return;
+			$inputfield->error(sprintf(
+				__('Value “%s” is already in use on page %d, please enter a different value', __FILE__), 
+				$value, $pageId
+			));
+		});
+		return $inputfield;
+	}
+	
+	/**
+	 * Return the database schema in specified format
+	 * 
+	 * @param Field $field
+	 * @return array
+	 *
+	 */
+	public function getDatabaseSchema(Field $field) {
+		$this->checkField($field);
+		$length = $this->wire()->database->getMaxIndexLength();
+		$schema = parent::getDatabaseSchema($field);
+		$schema['keys']['data_exact'] = "UNIQUE `data_exact` (`data`($length))";
+		return $schema;
+	}
+
+	/**
+	 * Check that field has necessary flags
+	 * 
+	 * @param Field $field
+	 * 
+	 */
+	protected function checkField(Field $field) {
+		if($field->hasFlag(Field::flagUnique)) return;
+		if($field->hasFlag(Field::flagFieldgroupContext)) {
+			$field = $this->wire()->fields->get($field->name);
+			if(!$field) return;
+		}
+		$field->addFlag(Field::flagUnique);
+		$field->save();
+	}
+}
+

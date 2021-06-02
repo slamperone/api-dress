@@ -1,0 +1,106 @@
+<?php  
+
+class VinosImport extends \ProcessWire\Process {
+
+  public function __construct(){
+
+      //limite per page
+      $this->contentName= 'Vino';
+      $this->contentNamePlural= 'Vinos';
+      $this->button_add =  TRUE;
+      $this->button_add_text =  'Agregar '.$this->contentName;
+
+ 
+      
+      $this->button_add_url =  '/engine/page/add/?parent_id='.$this->parentID;
+      $this->contentType='pregunta';
+      
+      $this->modulePath = $this->config->paths->siteModules.'Wine';
+    }
+
+  public static function getModuleinfo() {
+
+    return array(
+            'title' => 'Importar Vinos',
+            'summary' => 'Importar Vinos',
+            'version' => 100,
+            'href' => '',
+            'page'=>array('name'=>'import-vinos','parent'=>'/engine/vinos/'),
+            'permission' => '', /* permission required */
+            'configurable'=>false,
+            'requires' => array('WineVinos'),
+            'permissions' => array()  
+        );
+  }
+
+  
+
+    public function ___execute() {
+    
+      
+    }
+ 
+
+
+     public function ___executeProductsJson() {
+       
+       
+
+    }
+
+
+ 
+public function ___executeEdit(){
+    if($this->user->hasPermission($this->perm_edit)) {
+      return "Puedes editar los ".$this->contentNamePlural;
+    
+    }
+}
+
+public function ___executeDelete(){
+    if($this->user->hasPermission($this->perm_delete)) {
+      return "Puedes eliminar los ".$this->contentNamePlural;
+    
+    }
+}
+public function ___executeView(){
+    if($this->user->hasPermission($this->perm_view)) {
+      return "Puedes ver los ".$this->contentNamePlural;
+    
+    }
+}
+
+public function ___install() {
+    parent::___install(); // always remember to call parent method
+  }
+
+  /**
+   * Called only when your module is uninstalled
+   *
+   * This should return the site to the same state it was in before the module was installed. 
+   *
+   * If you don't need anything here, you can simply remove this method. 
+   *
+   */
+  public function ___uninstall() {
+    parent::___uninstall(); // always remember to call parent method
+  }
+
+    public function init() {
+        // add hook to the page edit module and the method that creates the wanted fieldset
+        $this->addHookAfter('ProcessPageEdit::buildFormSettings', $this, "removeSettings");
+    }
+
+  function removeSettings(\ProcessWire\HookEvent $event){
+        // $event->return being the inputfield wrapper
+        $wrapper = $event->return;
+        // set the inputfield wrapper to hidden
+        $wrapper->collapsed = \ProcessWire\Inputfield::collapsedHidden;
+        // Get the active Object (ProcessPageEdit)
+        $process = $event->object;
+        // Remove the Settings tab with the ID
+        $process->removeTab('ProcessPageEditSettings');
+        // we're done
+    }
+
+}
