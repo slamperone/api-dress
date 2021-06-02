@@ -53,7 +53,7 @@ $config->useFunctionsAPI = true;
 $config->dbHost = 'localhost';
 $config->dbName = 'pw3_vestidos_api';
 $config->dbUser = 'root';
-$config->dbPass = 'aqui va el pass de mysql';
+$config->dbPass = 'Choco01#';
 $config->dbPort = '3306';
 
 /**
