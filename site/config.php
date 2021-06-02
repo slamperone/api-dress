@@ -51,9 +51,9 @@ $config->useFunctionsAPI = true;
  * 
  */
 $config->dbHost = 'localhost';
-$config->dbName = 'pw3_vestidos';
+$config->dbName = 'pw3_vestidos_api';
 $config->dbUser = 'root';
-$config->dbPass = 'azda030780';
+$config->dbPass = 'aqui va el pass de mysql';
 $config->dbPort = '3306';
 
 /**
@@ -110,7 +110,7 @@ $config->installed = 1621889726;
  * Installer: HTTP Hosts Whitelist
  * 
  */
-$config->httpHosts = array('vestidos.pw.com');
+$config->httpHosts = array('ec2-3-131-119-29.us-east-2.compute.amazonaws.com');
 
 
 /**
