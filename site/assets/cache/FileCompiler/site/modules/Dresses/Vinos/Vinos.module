@@ -1,0 +1,261 @@
+<?php  
+
+class Vinos extends \ProcessWire\Process {
+
+  public function __construct(){
+
+      //limite per page
+      $this->contentName= 'Vino';
+      $this->contentNamePlural= 'Vinos';
+      $this->button_add =  TRUE;
+      $this->button_add_text =  'Agregar '.$this->contentName;
+
+      $this->parentID =1204;
+      $this->type = 'vino';
+      $this->button_add_url =  '/engine/page/add/?parent_id='.$this->parentID;
+      $this->perm_edit = 'admin-'.$this->type.'-edit';
+      $this->perm_delete = 'admin-'.$this->type.'-delete';
+      $this->perm_view = 'admin-'.$this->type.'-view';
+      $this->contentType='pregunta';
+      
+      $this->modulePath = $this->config->paths->siteModules.'Wine';
+    }
+
+  public static function getModuleinfo() {
+
+    return array(
+            'title' => 'Vinos',
+            'summary' => 'Gestionar Vinos',
+            'version' => 100,
+            'href' => '',
+            'page'=>array('name'=>'vinos','parent'=>'/engine/'),
+            'permission' => 'admin-dashboard', /* permission required */
+            'configurable'=>false,
+            'requires' => array('WineDashboard'),
+            'permissions' => array(     
+                'admin-vino-view' => 'Ver Trivia',
+                'admin-vino-edit' => 'Editar Trivia',
+                'admin-vino-delete' => 'Eliminar Trivia'
+                )  /* install new permission */
+        );
+  }
+
+  
+
+    public function ___execute() {
+     
+    
+    $this->querySelector="template=vino,include=hidden, limit=30";
+    $table = $this->modules->get("MarkupAdminDataTable");
+    $table->setEncodeEntities(false); 
+    $table->setSortable(true);
+    $table->setResizable(true);
+    $table->setResponsive(true);
+
+    $table->headerRow( ["Titulo",  "Creado","Acciones"] );
+
+    $results =  $this->pages->find($this->querySelector);
+    $pagination = $results->renderPager();
+    foreach($results as $item){
+     
+       $data = array(
+        // Values with a sting key are converter to a link: title => link
+         $item->title => $this->config->urls->admin."page/edit/?id=".$item->id,
+         date("F j, Y", $item->created),
+          "editar"=>$this->config->urls->admin."page/edit/?id=".$item->id
+      );
+      $table->row($data);
+    }
+
+
+   // $table->footerRow( $someArray );
+    //SET TEXT VARS 
+    $pageTitle = $this->contentName;
+    $description =  "Gestionar ".$this->post;
+ 
+   //SET TEMPLATE
+    $content = new \ProcessWire\TemplateFile(\ProcessWire\wire('files')->compile(dirname(\ProcessWire\wire("config")->paths->root . 'site/modules/Dresses/Vinos/Vinos.module').'/pages/admin-content.php',array('includes'=>true,'namespace'=>true,'modules'=>false,'skipIfNamespace'=>false)));
+     //set variables
+    //$content->set('description',$description);
+    $content->set('button_add',$this->button_add);
+    if($this->button_add===TRUE){
+        $content->set('button_add_text',$this->button_add_text);
+        $content->set('button_add_url',$this->button_add_url);
+    }
+  
+    $content->set('count_results',$results->getTotal());
+    $content->set('no_results','No se han encontrado '.$this->contentNamePlural);
+    $content->set('table',$table->render());
+    $content->set('pagination',$pagination);
+
+
+     //SET title
+     $this->page->title='Vinos';
+     return $content->render();
+
+      
+    }
+ 
+
+
+     public function ___executeShow() {
+        $selector = 'template=vino';
+
+        if (isset(\ProcessWire\wire('input')->get->success)) {
+            $this->message('Actualizar Todos');
+        }
+
+        $out = '<form method="post" action="http://apiwine.pw.com/engine/dashboard/vinos/editAll/">';
+
+        $out .= '<input type="hidden" name="selector" value="' . $selector . '" />';
+
+        $parents = array();
+        $editableFields = array();
+
+        foreach (\ProcessWire\wire('pages')->find($selector) as $page) {
+            $parents[$page->parent->id] = $page->parent;
+
+            if (count($editableFields) === 0) {
+                foreach ($page->template->fields as $field) {
+                    if (
+                        // Allowed field types
+                        (
+                            $field->type instanceof \ProcessWire\FieldtypePageTitle
+                            || $field->type instanceof \ProcessWire\FieldtypeText
+                        )
+                        // Blocked field types
+                        && !(
+                            $field->type instanceof \ProcessWire\FieldtypeTextarea
+                            || $field->name === 'headline'
+                        )
+                    ) {
+                        $editableFields[$field->name] = $field->label;
+                    }
+                }
+            }
+        }
+
+        foreach ($parents as $parent) {
+            $tree = array();
+            $temp = $parent;
+            while (!!$temp->id) {
+                $tree[] = $temp;
+                $temp = $temp->parent;
+            }
+
+            $tree = array_reverse($tree);
+
+            $out .= '';
+
+            $table = \ProcessWire\wire('modules')->get("MarkupAdminEditableTable");
+            $table->headerRow($editableFields);
+             $table->setEncodeEntities(false); 
+              $table->setSortable(true);
+              $table->setResizable(true);
+              $table->setResponsive(true);
+
+            $pages = $parent->find($selector);
+
+            foreach ($pages as $page) {
+                $row = array(
+                    $page->title => \ProcessWire\wire('config')->urls->admin . 'page/edit/?id=' . $page->id
+                );
+
+                foreach ($editableFields as $k => $f) {
+                    if ($k === 'title') continue;
+                    if ($k === 'headline') continue;
+
+                    $row[] = array('input' => array('name' => 'pages[' . $page->id . '][' . $k . ']', 'value' => $page->get($k)));
+                }
+
+                $table->row($row);
+            }
+
+            $out .=  $table->render();
+
+            $out .= '';
+        }
+
+        $button = $this->modules->get('InputfieldSubmit');
+        $button->value = 'Actualizar';
+
+        $out .= $button->render();
+
+        $out .= '</form>';
+
+        return $out;
+    }
+
+
+ public function ___executeEditAll() {
+        foreach ($_POST['pages'] as $id => $values) {
+            $page = \ProcessWire\wire('pages')->get((int) $id);
+
+            if (!!$page->id) {
+                foreach ($values as $k => $v) {
+                    $page->set($k, $v);
+                }
+
+                $page->save();
+            }
+        }
+
+        header('Location: http://apiwine.pw.com/engine/dashboard/vinos/show/?success');
+
+        die;
+    }
+
+public function ___executeEdit(){
+    if($this->user->hasPermission($this->perm_edit)) {
+      return "Puedes editar los ".$this->contentNamePlural;
+    
+    }
+}
+
+public function ___executeDelete(){
+    if($this->user->hasPermission($this->perm_delete)) {
+      return "Puedes eliminar los ".$this->contentNamePlural;
+    
+    }
+}
+public function ___executeView(){
+    if($this->user->hasPermission($this->perm_view)) {
+      return "Puedes ver los ".$this->contentNamePlural;
+    
+    }
+}
+
+public function ___install() {
+    parent::___install(); // always remember to call parent method
+  }
+
+  /**
+   * Called only when your module is uninstalled
+   *
+   * This should return the site to the same state it was in before the module was installed. 
+   *
+   * If you don't need anything here, you can simply remove this method. 
+   *
+   */
+  public function ___uninstall() {
+    parent::___uninstall(); // always remember to call parent method
+  }
+
+    public function init() {
+        // add hook to the page edit module and the method that creates the wanted fieldset
+        $this->addHookAfter('ProcessPageEdit::buildFormSettings', $this, "removeSettings");
+    }
+
+  function removeSettings(\ProcessWire\HookEvent $event){
+        // $event->return being the inputfield wrapper
+        $wrapper = $event->return;
+        // set the inputfield wrapper to hidden
+        $wrapper->collapsed = \ProcessWire\Inputfield::collapsedHidden;
+        // Get the active Object (ProcessPageEdit)
+        $process = $event->object;
+        // Remove the Settings tab with the ID
+        $process->removeTab('ProcessPageEditSettings');
+        // we're done
+    }
+
+}

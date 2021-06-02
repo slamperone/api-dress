@@ -1,0 +1,45 @@
+<?php  
+
+class DressesDashboard extends \ProcessWire\Process {
+
+
+
+  public static function getModuleinfo() {
+    return array(
+            'title' => 'Dashboard',
+            'summary' => 'Vestidos Dashboard',
+            'version' => 1.0,
+            'href' => '',
+            'page'=>array('name'=>'dashboard','parent'=>'/admin/'),
+            'permission' => 'admin-dashboard', /* permission required */
+            'configurable'=>false,
+            'permissions' => array(     
+                'admin-dashboard' => 'Ver Dashboard',
+          
+                )  /* install new permission */
+        );
+  }
+
+    public function __construct(){
+ 
+    }
+
+    public function ___execute() {
+        return "hello world";
+    }
+
+    public function ___install() {
+        parent::___install(); // always remember to call parent method
+    }
+
+     
+    public function ___uninstall() {
+        parent::___uninstall(); // always remember to call parent method
+    }
+    
+ 
+ 
+
+ 
+
+}
